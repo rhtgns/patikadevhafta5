@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karşılama Ekranı</title>
+  <style>
+    body {
+      background-color: #1e293b; /* Lacivert arka plan */
+      color: #f59e0b; /* Turuncu yazı rengi */
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    h1, h2, p {
+      margin: 10px 0;
+    }
+    .hidden {
+      display: none;
+    }
+    .clock {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Giriş Ekranı -->
+  <div id="welcome-screen">
+    <h1>Merhaba! İsminizi giriniz:</h1>
+    <input type="text" id="username" placeholder="İsminiz" />
+    <button onclick="startApp()">Başla</button>
+  </div>
+
+  <!-- Karşılama Ekranı -->
+  <div id="greeting-screen" class="hidden">
+    <h1 id="greeting"></h1>
+    <div class="clock" id="clock">00:00:00</div>
+    <h2 id="day"></h2>
+    <p>
+      Kodluyoruz Frontend Web Development Patikası'nın Javascript bölümündesiniz.
+    </p>
+  </div>
+
+  <script>
+    function startApp() {
+      // Kullanıcının ismini al
+      const username = document.getElementById("username").value.trim();
+      if (username) {
+        // Giriş ekranını gizle ve karşılama ekranını göster
+        document.getElementById("welcome-screen").classList.add("hidden");
+        document.getElementById("greeting-screen").classList.remove("hidden");
+
+        // İsmi karşılama mesajına ekle
+        document.getElementById("greeting").innerText = `Merhaba, ${username}! Hoş geldin!`;
+
+        // Saati ve günü güncelle
+        updateClock();
+        setInterval(updateClock, 1000);
+      } else {
+        alert("Lütfen isminizi giriniz!");
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+
+      // Saat formatını oluştur
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+
+      document.getElementById("clock").innerText = `${hours}:${minutes}:${seconds}`;
+
+      // Gün bilgisini oluştur
+      const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+      const today = days[now.getDay()];
+
+      document.getElementById("day").innerText = today;
+    }
+  </script>
+</body>
+</html>
