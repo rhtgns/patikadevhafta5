@@ -1,88 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karşılama Ekranı</title>
-  <style>
-    body {
-      background-color: #1e293b; /* Lacivert arka plan */
-      color: #f59e0b; /* Turuncu yazı rengi */
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-    h1, h2, p {
-      margin: 10px 0;
-    }
-    .hidden {
-      display: none;
-    }
-    .clock {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Drum Kit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .drum-kit {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 600px;
+        }
+
+        button.drum {
+            background: #444;
+            border: none;
+            border-radius: 10px;
+            padding: 20px 40px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+        }
+
+        button.drum:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 20px #fff;
+        }
+    </style>
 </head>
 <body>
-  <!-- Giriş Ekranı -->
-  <div id="welcome-screen">
-    <h1>Merhaba! İsminizi giriniz:</h1>
-    <input type="text" id="username" placeholder="İsminiz" />
-    <button onclick="startApp()">Başla</button>
-  </div>
+    <div class="drum-kit">
+        <button class="drum" data-sound="sounds/kick.wav">Kick</button>
+        <button class="drum" data-sound="sounds/snare.wav">Snare</button>
+        <button class="drum" data-sound="sounds/hihat.wav">Hi-hat</button>
+        <button class="drum" data-sound="sounds/tom1.wav">Tom 1</button>
+        <button class="drum" data-sound="sounds/tom2.wav">Tom 2</button>
+        <button class="drum" data-sound="sounds/crash.wav">Crash</button>
+        <button class="drum" data-sound="sounds/ride.wav">Ride</button>
+    </div>
+    <script>
+        document.querySelectorAll('.drum').forEach(button => {
+            button.addEventListener('click', () => {
+                const sound = button.dataset.sound;
+                const audio = new Audio(sound);
+                audio.play();
+            });
+        });
 
-  <!-- Karşılama Ekranı -->
-  <div id="greeting-screen" class="hidden">
-    <h1 id="greeting"></h1>
-    <div class="clock" id="clock">00:00:00</div>
-    <h2 id="day"></h2>
-    <p>
-      Kodluyoruz Frontend Web Development Patikası'nın Javascript bölümündesiniz.
-    </p>
-  </div>
-
-  <script>
-    function startApp() {
-      // Kullanıcının ismini al
-      const username = document.getElementById("username").value.trim();
-      if (username) {
-        // Giriş ekranını gizle ve karşılama ekranını göster
-        document.getElementById("welcome-screen").classList.add("hidden");
-        document.getElementById("greeting-screen").classList.remove("hidden");
-
-        // İsmi karşılama mesajına ekle
-        document.getElementById("greeting").innerText = `Merhaba, ${username}! Hoş geldin!`;
-
-        // Saati ve günü güncelle
-        updateClock();
-        setInterval(updateClock, 1000);
-      } else {
-        alert("Lütfen isminizi giriniz!");
-      }
-    }
-
-    function updateClock() {
-      const now = new Date();
-
-      // Saat formatını oluştur
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-
-      document.getElementById("clock").innerText = `${hours}:${minutes}:${seconds}`;
-
-      // Gün bilgisini oluştur
-      const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-      const today = days[now.getDay()];
-
-      document.getElementById("day").innerText = today;
-    }
-  </script>
+        document.addEventListener('keydown', event => {
+            const keyMap = {
+                'q': 'sounds/kick.wav',
+                'w': 'sounds/snare.wav',
+                'e': 'sounds/hihat.wav',
+                'r': 'sounds/tom1.wav',
+                't': 'sounds/tom2.wav',
+                'y': 'sounds/crash.wav',
+                'u': 'sounds/ride.wav'
+            };
+            if (keyMap[event.key]) {
+                const audio = new Audio(keyMap[event.key]);
+                audio.play();
+            }
+        });
+    </script>
 </body>
 </html>
